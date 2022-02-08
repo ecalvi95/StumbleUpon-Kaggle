@@ -23,13 +23,12 @@ df$url = NULL # cannot use bc char
 df$urlid = NULL # do not need
 df$boilerplate = NULL #cannot use bc char
 df$alchemy_category[df$alchemy_category == "?"] <- NA
-df$news_front_page = NULL #removed bc it was giving me troube when imputing
+df$news_front_page = NULL 
 
 library(mice)
 
 idx = is.na(df$alchemy_category_score) #indicates missing values
 impute_rf = mice(df, method = 'rf')
-#rf means random forest
 df_rf = complete(impute_rf)
 df_rf[idx, ]
 
@@ -69,16 +68,13 @@ test = df_rf[-trainingCases, ]
 
 #create the model
 model_tree = rpart(label~., method = "class", data=training)
-rpart.plot(model_tree) 
+rpart.plot(model_tree) #helps us evaluate importance of variables and at what value
 predictions_tree = predict(model_tree,test, type="class")
 observations = test$label
 
 # Evaluate
 error_rate_btree = sum(predictions_tree != observations)/nrow(test)
 error_bench = benchmarkErrorRate(training$label, test$label)
-
-# NOTE/THOUGHT --> Do we need to control for overfitting or pruning?? - I did it because we usually do, but in terms of
-# of telling a story about the data, overfitting doesn't really seem like a concern. Also it makes our tree so much harder to read. 
 
 # Overfitting. 
 stopping_rules = rpart.control(minsplit=1,minbucket=1,cp=0) #for easier view(minsplit=25,minbucket=25,cp=.0001)
@@ -96,5 +92,5 @@ rpart.plot(model_tree_prune1)
 model_rf = randomForest(label ~.,method = "class", data=training, ntree=500)
 predictions_rf = predict(model_rf,test,type="class")
 error_rf = sum(predictions_rf != observations) / nrow(test)
-varImpPlot(model_rf) 
+varImpPlot(model_rf) #shows us the importance of each variable
 table(predictions_rf,observations)
