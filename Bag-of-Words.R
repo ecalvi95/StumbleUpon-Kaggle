@@ -1,5 +1,3 @@
-#the majority of this code came straight from Karst's class 13 videos! Reference there if needed
-
 library(tidyverse) #for reaching tsv
 library(readr)
 library(tidytext) #for word of bags
