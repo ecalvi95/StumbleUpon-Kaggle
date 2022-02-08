@@ -23,8 +23,7 @@ df$url = NULL # cannot use bc char
 df$urlid = NULL # do not need
 df$boilerplate = NULL #cannot use bc char
 
-df$news_front_page = NULL #removed bc it was giving me troube when imputing 
-
+df$news_front_page = NULL 
 
 df$label = as.logical(df$label) #convert from num
 
@@ -80,11 +79,11 @@ obs = test$label
 
 table(predTF,obs)
 
-error_rate = sum(predTF != obs)/nrow(test) # 36%   #new 34%
+error_rate = sum(predTF != obs)/nrow(test) # 34%
 error_bench = benchmarkErrorRate(training$label, test$label) # 49%
 
-sensitivity = sum(predTF == TRUE & obs == TRUE)/sum(obs == TRUE)# new 70%  # 0.73 -> % of observed trues we predict correctly
-specificity = sum(predTF == FALSE & obs == FALSE)/sum(obs == FALSE) # new 62% #0.55 -> % of observed falses we predicted correctly
+sensitivity = sum(predTF == TRUE & obs == TRUE)/sum(obs == TRUE)#  70%   -> % of observed trues we predict correctly
+specificity = sum(predTF == FALSE & obs == FALSE)/sum(obs == FALSE) #  62% -> % of observed falses we predicted correctly
 
 ROCChart(obs, pred)
 liftChart(obs,pred)
@@ -93,6 +92,6 @@ library(pROC)
 
 auc(obs,pred)
 
-AUC = 0.68
+AUC = 0.72
 
-#new AUC with category factors is 0.72!
+#AUC with category factors is 0.72
